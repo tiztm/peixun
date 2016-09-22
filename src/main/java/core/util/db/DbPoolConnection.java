@@ -1,16 +1,12 @@
-package util.db;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.SQLException;
-import java.util.Properties;
+package core.util.db;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 import com.alibaba.druid.pool.DruidPooledConnection;
+
+import java.io.*;
+import java.sql.SQLException;
+import java.util.Properties;
 
 public class DbPoolConnection {
 
@@ -18,7 +14,7 @@ public class DbPoolConnection {
     private static DruidDataSource dds = null;
     static {
         Properties configureProperties = new Properties();
-        InputStream is = DbPoolConnection.class.getClassLoader().getResourceAsStream("ConfigureProperties.properties");
+        InputStream is = DbPoolConnection.class.getClassLoader().getResourceAsStream("jdbc.properties");
         try {
         configureProperties.load(is);
 

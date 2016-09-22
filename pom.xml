@@ -6,7 +6,7 @@
 
     <groupId>com.ztm</groupId>
     <artifactId>peixun</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.03</version>
 
     <repositories>
         <repository>
@@ -19,17 +19,24 @@
 
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
 
-        <!-- https://mvnrepository.com/artifact/commons-dbutils/commons-dbutils -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.2</version>
+        </dependency>
+
         <dependency>
             <groupId>commons-dbutils</groupId>
             <artifactId>commons-dbutils</artifactId>
             <version>1.6</version>
         </dependency>
 
-
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.1</version>
+        </dependency>
 
 
         <dependency>
@@ -39,17 +46,10 @@
         </dependency>
 
 
-        <!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
             <version>1.0.26</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core</artifactId>
-            <version>5.2.2.Final</version>
         </dependency>
 
         <dependency>

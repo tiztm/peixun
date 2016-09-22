@@ -1,6 +1,6 @@
-package dao;
+package biz.dao;
 
-import entity.Duokan;
+import biz.entity.Duokan;
 import org.junit.Test;
 
 /**
@@ -14,17 +14,11 @@ public class duokanDaoTest {
     public void test()
     {
         Duokan object = new Duokan();
-        object.setName("123");
-        object.setUrl("1233");
-        object.setIsdown(1);
-
-
-        DuokanDao.dao().save(object);
+        object.setUrl("4434");
 
         object.setId(1212);
 
-
-        System.out.println(DuokanDao.dao().update(object));
+        System.out.println(DuokanDao.dao.update(object));
 
 
     }

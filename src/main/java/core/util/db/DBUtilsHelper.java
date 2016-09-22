@@ -1,8 +1,9 @@
-package util.db;
+package core.util.db;
 
-import java.sql.SQLException;
-import javax.sql.DataSource;
 import org.apache.commons.dbutils.QueryRunner;
+
+import javax.sql.DataSource;
+import java.sql.SQLException;
 
 public class DBUtilsHelper {
     private DataSource ds = null;

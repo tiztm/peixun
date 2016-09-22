@@ -1,4 +1,10 @@
-package util.db;
+package core.dao;
+
+import core.util.CommonUtil;
+import core.util.db.DBUtilsHelper;
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.*;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -6,21 +12,13 @@ import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.handlers.ArrayHandler;
-import org.apache.commons.dbutils.handlers.ArrayListHandler;
-import org.apache.commons.dbutils.handlers.BeanHandler;
-import org.apache.commons.dbutils.handlers.BeanListHandler;
-import org.apache.commons.dbutils.handlers.MapHandler;
-import org.apache.commons.dbutils.handlers.MapListHandler;
-import org.apache.commons.dbutils.handlers.ScalarHandler;
-public class DbBuilder<T> {
+public class BaseDao<T> {
 
 
     protected Class<T> entityClass = null;
 
 
-    protected DbBuilder() {
+    protected BaseDao() {
 
 
         if (entityClass == null) {
@@ -54,7 +52,7 @@ public class DbBuilder<T> {
      */
     public static int getCount(String sql) {
         try {
-            QueryRunner runner = DbBuilder.getQueryRunner();
+            QueryRunner runner = BaseDao.getQueryRunner();
             Object value = runner.query(sql, new ScalarHandler());
             return CommonUtil.objectToInteger(value);
         } catch (Exception ex) {
@@ -74,7 +72,7 @@ public class DbBuilder<T> {
      */
     public static int getCount(String sql, Object... params) {
         try {
-            QueryRunner runner = DbBuilder.getQueryRunner();
+            QueryRunner runner = BaseDao.getQueryRunner();
             Object value = runner.query(sql, new ScalarHandler(), params);
             return CommonUtil.objectToInteger(value);
         } catch (Exception ex) {
@@ -91,7 +89,7 @@ public class DbBuilder<T> {
      */
     public static Object[] getFirstRowArray(String sql) {
         try {
-            QueryRunner runner = DbBuilder.getQueryRunner();
+            QueryRunner runner = BaseDao.getQueryRunner();
             return runner.query(sql, new ArrayHandler());
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -110,7 +108,7 @@ public class DbBuilder<T> {
      */
     public static Object[] getFirstRowArray(String sql, Object... params) {
         try {
-            QueryRunner runner = DbBuilder.getQueryRunner();
+            QueryRunner runner = BaseDao.getQueryRunner();
             return runner.query(sql, new ArrayHandler(), params);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -127,7 +125,7 @@ public class DbBuilder<T> {
      */
     public static List getListArray(String sql) {
         try {
-            QueryRunner runner = DbBuilder.getQueryRunner();
+            QueryRunner runner = BaseDao.getQueryRunner();
             return runner.query(sql, new ArrayListHandler());
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -146,7 +144,7 @@ public class DbBuilder<T> {
      */
     public static List getListArray(String sql, Object... params) {
         try {
-            QueryRunner runner = DbBuilder.getQueryRunner();
+            QueryRunner runner = BaseDao.getQueryRunner();
             return runner.query(sql, new ArrayListHandler(), params);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -164,7 +162,7 @@ public class DbBuilder<T> {
      */
     public static Map getFirstRowMap(String sql) {
         try {
-            QueryRunner runner = DbBuilder.getQueryRunner();
+            QueryRunner runner = BaseDao.getQueryRunner();
             return runner.query(sql, new MapHandler());
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -183,7 +181,7 @@ public class DbBuilder<T> {
      */
     public static Map getFirstRowMap(String sql, Object... params) {
         try {
-            QueryRunner runner = DbBuilder.getQueryRunner();
+            QueryRunner runner = BaseDao.getQueryRunner();
             return runner.query(sql, new MapHandler(), params);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -201,7 +199,7 @@ public class DbBuilder<T> {
      */
     public static List getListMap(String sql) {
         try {
-            QueryRunner runner = DbBuilder.getQueryRunner();
+            QueryRunner runner = BaseDao.getQueryRunner();
             return runner.query(sql, new MapListHandler());
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -220,7 +218,7 @@ public class DbBuilder<T> {
      */
     public static List getListMap(String sql, Object... params) {
         try {
-            QueryRunner runner = DbBuilder.getQueryRunner();
+            QueryRunner runner = BaseDao.getQueryRunner();
             return runner.query(sql, new MapListHandler(), params);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -239,7 +237,7 @@ public class DbBuilder<T> {
      */
     public  T getBean(String sql) {
         try {
-            QueryRunner runner = DbBuilder.getQueryRunner();
+            QueryRunner runner = BaseDao.getQueryRunner();
             return (T)runner.query(sql, new BeanHandler(entityClass));
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -258,7 +256,7 @@ public class DbBuilder<T> {
      */
     public   T getBean(String sql, Object... params) {
         try {
-            QueryRunner runner = DbBuilder.getQueryRunner();
+            QueryRunner runner = BaseDao.getQueryRunner();
             return (T)runner.query(sql, new BeanHandler(entityClass), params);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -277,7 +275,7 @@ public class DbBuilder<T> {
      */
     public   List<T> getListBean(String sql ) {
         try {
-            QueryRunner runner = DbBuilder.getQueryRunner();
+            QueryRunner runner = BaseDao.getQueryRunner();
             return ( List<T>)runner.query(sql, new BeanListHandler(entityClass));
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -297,7 +295,7 @@ public class DbBuilder<T> {
      */
     public   List<T> getListBean(String sql , Object... params) {
         try {
-            QueryRunner runner = DbBuilder.getQueryRunner();
+            QueryRunner runner = BaseDao.getQueryRunner();
             return (  List<T>)runner.query(sql, new BeanListHandler(entityClass), params);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -328,7 +326,7 @@ public class DbBuilder<T> {
                 if(o==null) continue;
                 //TODO:当前仅仅支持数字和Char
                 cols =cols+field.getName()+ ",";
-                values=values+o+ ",";
+                values=values+"'"+o+ "',";
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
@@ -382,7 +380,7 @@ public class DbBuilder<T> {
                 Object o = field.get(object);
                 if(o==null) continue;
                 //TODO:当前仅仅支持数字和Char
-                cols =cols+ name +"="+o+ ",";
+                cols =cols+ name +"='"+o+ "',";
             }
         } catch (IllegalAccessException e) {
             e.printStackTrace();
@@ -418,7 +416,7 @@ public class DbBuilder<T> {
      */
     public static int save(String sql, Object... params) {
         try {
-            QueryRunner runner = DbBuilder.getQueryRunner();
+            QueryRunner runner = BaseDao.getQueryRunner();
             return runner.update(sql, params);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -437,7 +435,7 @@ public class DbBuilder<T> {
      */
     public static int update(String sql, Object... params) {
         try {
-            QueryRunner runner = DbBuilder.getQueryRunner();
+            QueryRunner runner = BaseDao.getQueryRunner();
             return runner.update(sql, params);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -456,7 +454,7 @@ public class DbBuilder<T> {
      */
     public static int delete(String sql, Object... params) {
         try {
-            QueryRunner runner = DbBuilder.getQueryRunner();
+            QueryRunner runner = BaseDao.getQueryRunner();
             return runner.update(sql, params);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -475,7 +473,7 @@ public class DbBuilder<T> {
      */
     public static int[] batch(String sql, Object[][] params) {
         try {
-            QueryRunner runner = DbBuilder.getQueryRunner();
+            QueryRunner runner = BaseDao.getQueryRunner();
             return runner.batch(sql, params);
         } catch (Exception ex) {
             ex.printStackTrace();

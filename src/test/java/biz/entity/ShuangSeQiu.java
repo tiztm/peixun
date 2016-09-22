@@ -1,4 +1,4 @@
-package entity;
+package biz.entity;
 
 /**
  * Created by IDEA
